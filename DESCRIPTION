@@ -1,0 +1,21 @@
+Package: sentimentBR
+Title: Tools for Sentiment Analysis in English and Portuguese
+Version: 0.3.0
+Authors@R: 
+      person("Jodavid", "Ferreira", email = "jdaf1@de.ufpe.br",role = c("aut","cre"), comment = c(ORCID = "0000-0002-2131-6464"))
+Description: based on the sentiment package (https://cran.r-project.org/web/packages/sentiment/index.html)
+             of the "Timothy P. Jurka" which is archived on 2012-12-13,
+             this kept the use in English and was updated increasing the use in the Portuguese language of Brazil.
+License: GPL-3
+LazyLoad: yes
+Depends: 
+    R (>= 2.10),
+    tm,
+    Rstem
+RoxygenNote: 7.1.1
+Encoding: UTF-8
+Imports: 
+    stringi
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
