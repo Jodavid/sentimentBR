@@ -1,6 +1,6 @@
 Package: sentimentBR
 Title: Tools for Sentiment Analysis in English and Portuguese
-Version: 0.3.0
+Version: 0.3.1
 Authors@R: 
       person("Jodavid", "Ferreira", email = "jdaf1@de.ufpe.br",role = c("aut","cre"), comment = c(ORCID = "0000-0002-2131-6464"))
 Description: based on the sentiment package (https://cran.r-project.org/web/packages/sentiment/index.html)

@@ -20,6 +20,10 @@ knitr::opts_chunk$set(
 <!-- badges: end -->
 
 
+Última Atualização: `r format(Sys.Date(),"%d-%m-%Y")`
+
+
+
 ## Visão geral
 
 No CRAN do R, existe um pacote arquivado denominado
@@ -49,7 +53,9 @@ library(sentimentBR)
 
 # Texto a ser classficado
 documento <- c("A alegria que se tem em pensar e aprender faz-nos pensar e aprender ainda mais.",
-               "Um pouco de desprezo economiza bastante ódio.")
+               "Um pouco de desprezo economiza bastante ódio.",
+               "Não crie limites para si mesmo. Você deve ir tão longe quanto sua mente permitir. O que você mais quer pode ser conquistado.",
+               "Pessoas vencedoras não são aquelas que não falham, são aquelas que não desistem")
 
 # Classificando Emoções
 classify_emotion(documento,algorithm="bayes",verbose=FALSE, lang = "pt")
@@ -57,6 +63,14 @@ classify_emotion(documento,algorithm="bayes",verbose=FALSE, lang = "pt")
 # Classificando Polaridade
 classify_polarity(documento,algorithm="bayes",verbose=FALSE, lang = "pt")
 ```
+
+
+## Atualizações:
+
+* **05.06.2021**: Primeiro envio com as funções iniciais.
+
+* **12.06.2021**: Aumento do dicionário para emoções e inclusão de quatro novas classes de classificação.
+
 
 Um post iniciando com Scraping e concluíndo com alguns gráficos para análisar os sentimentos de textos pode ser encontrado no meu blog:
 [https://jodavid.github.io/post/](https://jodavid.github.io/post/)

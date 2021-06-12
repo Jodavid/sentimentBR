@@ -34,6 +34,10 @@ Returns an object of class \code{data.frame} with seven columns and one row for 
        \item{joy}{The absolute log likelihood of the document expressing a joyous sentiment.}
        \item{sadness}{The absolute log likelihood of the document expressing a sad sentiment.}
        \item{surprise}{The absolute log likelihood of the document expressing a surprised sentiment.}
+       \item{trust}{The absolute log likelihood of the document expressing a trust sentiment.}
+       \item{negative}{The absolute log likelihood of the document expressing a negative sentiment.}
+       \item{positive}{The absolute log likelihood of the document expressing a positive sentiment.}
+       \item{anticipation}{The absolute log likelihood of the document expressing a anticipation sentiment.}
        \item{best_fit}{The most likely sentiment category (e.g. anger, disgust, fear, joy, sadness, surprise) for the given text.}
 }
 \description{
@@ -46,6 +50,13 @@ documents <- c("I am very happy, excited, and optimistic.",
 
 # CLASSIFY EMOTIONS
 classify_emotion(documents,algorithm="bayes",verbose=TRUE, lang = "en")
+
+# pt-BR
+documentos <- c("Estou muito feliz, animado e otimista.",
+               "Estou muito assustado e irritado.")
+
+# CLASSIFY EMOTIONS
+classify_emotion(documentos,algorithm="bayes",verbose=TRUE, lang = "pt")
 
 
 }

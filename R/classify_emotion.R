@@ -16,6 +16,10 @@
 #'        \item{joy}{The absolute log likelihood of the document expressing a joyous sentiment.}
 #'        \item{sadness}{The absolute log likelihood of the document expressing a sad sentiment.}
 #'        \item{surprise}{The absolute log likelihood of the document expressing a surprised sentiment.}
+#'        \item{trust}{The absolute log likelihood of the document expressing a trust sentiment.}
+#'        \item{negative}{The absolute log likelihood of the document expressing a negative sentiment.}
+#'        \item{positive}{The absolute log likelihood of the document expressing a positive sentiment.}
+#'        \item{anticipation}{The absolute log likelihood of the document expressing a anticipation sentiment.}
 #'        \item{best_fit}{The most likely sentiment category (e.g. anger, disgust, fear, joy, sadness, surprise) for the given text.}
 #'
 #' @author Timothy P. Jurka <tpjurka@@ucdavis.edu> and
@@ -30,26 +34,50 @@
 #' # CLASSIFY EMOTIONS
 #' classify_emotion(documents,algorithm="bayes",verbose=TRUE, lang = "en")
 #'
+#' # pt-BR
+#' documentos <- c("Estou muito feliz, animado e otimista.",
+#'                "Estou muito assustado e irritado.")
+#'
+#' # CLASSIFY EMOTIONS
+#' classify_emotion(documentos,algorithm="bayes",verbose=TRUE, lang = "pt")
+#'
 #'
 classify_emotion <- function(textColumns,algorithm="bayes",prior=1.0,verbose=FALSE,lang = "en",...) {
 	matrix <- create_matrix(textColumns,...)
 
 	if(lang == "en"){
-	lexicon <- read.csv(system.file("data/emotions.csv.gz",package="sentimentBR"),header=FALSE)
-	counts <- list(anger=length(which(lexicon[,2]=="anger")),disgust=length(which(lexicon[,2]=="disgust")),fear=length(which(lexicon[,2]=="fear")),joy=length(which(lexicon[,2]=="joy")),sadness=length(which(lexicon[,2]=="sadness")),surprise=length(which(lexicon[,2]=="surprise")),total=nrow(lexicon))
+	lexicon <- read.csv(system.file("data/emotions.csv.gz",package="sentimentBR"),header=FALSE, sep=",")
+	# ---------
+	lexicon[,1] <- rm_accent(lexicon[,1])
+	# ---------
+	counts <- list(anger=length(which(lexicon[,2]=="anger")),disgust=length(which(lexicon[,2]=="disgust")),
+	               fear=length(which(lexicon[,2]=="fear")),joy=length(which(lexicon[,2]=="joy")),
+	               sadness=length(which(lexicon[,2]=="sadness")),surprise=length(which(lexicon[,2]=="surprise")),
+	               trust=length(which(lexicon[,2]=="trust")),positive=length(which(lexicon[,2]=="positive")),
+	               negative=length(which(lexicon[,2]=="negative")),anticipation=length(which(lexicon[,2]=="anticipation")),
+	               total=nrow(lexicon))
 	}else if(lang == "pt"){
-	  lexicon <- read.csv(system.file("data/emotionspt.csv.gz",package="sentimentBR"),header=FALSE)
-	  counts <- list(anger=length(which(lexicon[,2]=="anger")),disgust=length(which(lexicon[,2]=="disgust")),fear=length(which(lexicon[,2]=="fear")),joy=length(which(lexicon[,2]=="joy")),sadness=length(which(lexicon[,2]=="sadness")),surprise=length(which(lexicon[,2]=="surprise")),total=nrow(lexicon))
+	  lexicon <- read.csv(system.file("data/emotionspt.csv.gz",package="sentimentBR"),header=FALSE,
+	                      quote = "", sep=",", row.names = NULL)
+	  # ---------
+	  lexicon[,1] <- rm_accent(lexicon[,1])
+	  # ---------
+	  counts <- list(anger=length(which(lexicon[,2]=="anger")),disgust=length(which(lexicon[,2]=="disgust")),
+	                 fear=length(which(lexicon[,2]=="fear")),joy=length(which(lexicon[,2]=="joy")),
+	                 sadness=length(which(lexicon[,2]=="sadness")),surprise=length(which(lexicon[,2]=="surprise")),
+	                 trust=length(which(lexicon[,2]=="trust")),positive=length(which(lexicon[,2]=="positive")),
+	                 negative=length(which(lexicon[,2]=="negative")),anticipation=length(which(lexicon[,2]=="anticipation")),
+	                 total=nrow(lexicon))
 	}
 
 	# ----------------
-	lexicon[,1] <- rm_accent(lexicon[,1])
+	#lexicon[,1] <- rm_accent(lexicon[,1])
 	documents <- c()
 	# ----------------
 
 	for (i in 1:nrow(matrix)) {
 		if (verbose) print(paste("DOCUMENT",i))
-		scores <- list(anger=0,disgust=0,fear=0,joy=0,sadness=0,surprise=0)
+		scores <- list(anger=0,disgust=0,fear=0,joy=0,sadness=0,surprise=0, trust=0, positive=0,negative=0,anticipation=0)
 		doc <- matrix[i,]
 		words <- findFreqTerms(doc,lowfreq=1)
 
@@ -94,11 +122,15 @@ classify_emotion <- function(textColumns,algorithm="bayes",prior=1.0,verbose=FAL
 
         best_fit <- names(scores)[which.max(unlist(scores))]
         if (best_fit == "disgust" && as.numeric(unlist(scores[2]))-3.09234 < .01) best_fit <- NA
-		documents <- rbind(documents,c(scores$anger,scores$disgust,scores$fear,scores$joy,scores$sadness,scores$surprise,best_fit))
+		documents <- rbind(documents,c(scores$anger,scores$disgust,scores$fear,scores$joy,
+		                               scores$sadness,scores$surprise,scores$trust,scores$positive,
+		                               scores$negative, scores$anticipation,
+		                               best_fit))
 	}
 
 	if(lang == "en"){
-	  colnames(documents) <- c("ANGER","DISGUST","FEAR","JOY","SADNESS","SURPRISE","BEST_FIT")
+	  colnames(documents) <- c("ANGER","DISGUST","FEAR","JOY","SADNESS","SURPRISE",
+	                           "TRUST", "POSITIVE", "NEGATIVE", "ANTICIPATION","BEST_FIT")
 	}else if(lang == "pt"){
 	  #-------------------------
 	  class <- function(x){
@@ -112,6 +144,10 @@ classify_emotion <- function(textColumns,algorithm="bayes",prior=1.0,verbose=FAL
 	                          "joy" = "alegria",
 	                          "sandness" = "triteza",
 	                          "surprise" = "surpresa",
+	                          "trust" = "confiança",
+	                          "positive" = "positiva",
+	                          "negative" = "negativa",
+	                          "anticipation" = "antecipação",
 	                          "NA" = NA
 	      )
 	    }
@@ -119,8 +155,9 @@ classify_emotion <- function(textColumns,algorithm="bayes",prior=1.0,verbose=FAL
 
 	  }
 	  #-------------------------
-	  colnames(documents) <- c("RAIVA","DESGOSTO","MEDO","ALEGRIA","TRISTEZA","SURPRESA","BEST_FIT")
-	  documents[,7] <- class(documents[,7])
+	  colnames(documents) <- c("RAIVA","DESGOSTO","MEDO","ALEGRIA","TRISTEZA","SURPRESA",
+	                           "CONFIANÇA", "POSITIVA", "NEGATIVA", "ANTECIPAÇÃO","BEST_FIT")
+	  documents[,11] <- class(documents[,11])
   }
 	return(documents)
 }
