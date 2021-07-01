@@ -9,7 +9,7 @@ version](https://www.r-pkg.org/badges/version/sentimentBR)](https://cran.r-proje
 Download](https://cranlogs.r-pkg.org/badges/grand-total/sentimentBR)](https://cran.r-project.org/package=sentimentBR)
 <!-- badges: end -->
 
-Última Atualização: 12-06-2021
+Última Atualização: 01-07-2021
 
 ## Visão geral
 
@@ -37,6 +37,11 @@ pacote original arquivado.
 ``` r
 # Instalação utilizando o pacote devtools
 install.packages("devtools")
+
+# Instalação do pacote de dependência
+install.packages("Rstem", repos = "http://www.omegahat.net/R")
+
+# Instação do pacote sentimentBR
 devtools::install_github("jodavid/sentimentBR")
 ```
 
@@ -90,6 +95,9 @@ classify_polarity(documento,algorithm="bayes",verbose=FALSE, lang = "pt")
 
 -   **12.06.2021**: Aumento do dicionário para emoções e inclusão de
     quatro novas classes de classificação.
+
+-   **01.07.2021**: Adicionado a instalação do pacote de dependência
+    Rstem.
 
 Um post iniciando com Scraping e concluíndo com alguns gráficos para
 análisar os sentimentos de textos pode ser encontrado no meu blog:
