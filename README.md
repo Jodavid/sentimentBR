@@ -39,7 +39,10 @@ pacote original arquivado.
 install.packages("devtools")
 
 # Instalação do pacote de dependência
-install.packages("Rstem", repos = "http://www.omegahat.net/R")
+# Faz o download do pacote aqui do repositório pelo link:
+# https://github.com/Jodavid/sentimentBR/blob/main/Rstem_0.4-1.tar.gz
+# e instala como pacote local substituindo XXX pelo local do arquivo
+install.packages("XXX/Rstem_0.4-1.tar.gz", repos = NULL, type = "source")
 
 # Instação do pacote sentimentBR
 devtools::install_github("jodavid/sentimentBR")
